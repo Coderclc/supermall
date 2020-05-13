@@ -1,0 +1,13 @@
+<template>
+  <div id="shopping">
+    Shopping
+  </div>
+</template>
+<script>
+export default {
+  name:"Shopping"
+}
+</script>
+<style scoped>
+
+</style>

@@ -2,8 +2,6 @@ const path = require("path");
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
-console.log(resolve("src"));
-
 // module.exports={
 //     chainWebpack:(config)=>{
 //         config.resolve.alias
@@ -21,11 +19,13 @@ module.exports = {
   configureWebpack: {
     resolve: {
       alias: {
+        // 不能再次定义@,否则重定义,默认为src
         assets: "@/assets",
         img: "assets/img",
         views: resolve("src/views"),
         common: "@/common",
-        components: "@/components"
+        components: "@/components",
+        network: "@/network"
       }
     }
   }

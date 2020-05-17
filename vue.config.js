@@ -16,6 +16,9 @@ function resolve(dir) {
 //     }
 // }
 module.exports = {
+   devServer: {
+    disableHostCheck: true
+   },
   configureWebpack: {
     resolve: {
       alias: {
@@ -26,7 +29,8 @@ module.exports = {
         common: "@/common",
         components: "@/components",
         network: "@/network"
-      }
+      },
+      extensions: [".jpg"]
     }
   }
 };

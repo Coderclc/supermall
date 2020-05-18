@@ -58,8 +58,11 @@ export default {
     // 执行 getHomeWares方法获取首页商品数据
     // 初始获取第一页的数据,并且每上拉加载一次,就更新page的页数和list
     this.getHomeWares("pop");
-    this.getHomeWares("new");
+    this.getHomeWares("new"); 
     this.getHomeWares("sell");
+    // this.$bus.$on("imgLoaded",()=>{
+    //    this.$refs.scroll.refresh()
+    // })
   },
   methods: {
     /**
@@ -81,7 +84,7 @@ export default {
     },
     // 回到顶部
     backTop(){
-      this.$refs.scroll.scrollTo(0,0,500)
+      this.$refs.scroll.scrollTo(0,-600,500)
     },
     // 监听滚轮位置
     scroll(position){
@@ -91,6 +94,7 @@ export default {
     pullingUp(){
       this.getHomeWares(this.inititalType);
     },
+
     /**
      * 网络请求
      */
@@ -125,7 +129,16 @@ export default {
   computed: {
     showWares() {
       return this.Wares[this.inititalType].list;
-    },
+    },  
+    // 将Vuex的数据绑定给计算属性
+    listenImgOnLoad(){
+      return this.$store.state.imgOnLoad
+    }
+  },
+  watch:{
+    listenImgOnLoad(){
+      this.$refs.scroll.refresh()
+    }
   }
 };
 </script>
@@ -144,14 +157,16 @@ export default {
   z-index: 1;
 }
 .home-tab-switch {
+  /* 利用BScroll滑动,这个属性失效 */
   /* position: sticky;
   top: 44px;
   left: 0; */
   background-color: #fff;
 }
 .wrapper{
+  /* 自动计算高度法 */
   height:calc(100% - 49px);
-  /* overflow: hidden; */
+  /* 强制定位法 */
   /* position: absolute;
   top: 44px;
   bottom: 49px; */

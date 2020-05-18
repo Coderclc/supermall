@@ -15,19 +15,22 @@ export default {
       type: Number,
       default() {
         return 0;
-      },
+      }
     },
-    pullUpLoad:{
-      type:Boolean,
-      default:false
+    pullUpLoad: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
     scrollTo(x, y, delayed = 300) {
       this.scroll.scrollTo(x, y, delayed);
     },
-    finishPullUp(){
-      this.scroll.finishPullUp()
+    finishPullUp() {
+      this.scroll.finishPullUp();
+    },
+    refresh() {
+      this.scroll.refresh();
     }
   },
   mounted() {
@@ -35,14 +38,13 @@ export default {
     this.scroll = new BScroll(this.$refs.wrapper, {
       click: true,
       probeType: this.probeType,
-      pullUpLoad:this.pullUpLoad
+      pullUpLoad: this.pullUpLoad
     });
     // 监听scroll的position
     this.scroll.on("scroll", position => {
       this.$emit("scroll", position);
-      
     });
-    this.scroll.on("pullingUp", ()=> {
+    this.scroll.on("pullingUp", () => {
       this.$emit("pullingUp");
     });
   }

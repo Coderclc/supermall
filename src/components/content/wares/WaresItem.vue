@@ -1,6 +1,6 @@
 <template>
   <div class="waresitem">
-    <img :src="item.show.img" alt />
+    <img :src="item.show.img" @load="imgLoad" />
     <div class="info">
       <p>{{item.title}}</p>
       <span class="price">{{item.price}}</span>
@@ -16,13 +16,19 @@ export default {
     item: {
       type: Object
     }
+  },
+  methods:{
+    imgLoad(){
+      this.$store.commit("imgLoaded")
+      // 事件总线方法
+      // this.$bus.$emit("imgLoaded")
+    }
   }
 };
 </script>
 
 <style>
 .waresitem {
-  
   width: 48%;
   padding-bottom: 40px;
   position: relative;

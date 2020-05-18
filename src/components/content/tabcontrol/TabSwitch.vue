@@ -38,11 +38,11 @@ export default {
   display: flex;
   text-align: center;
   z-index: 9;
-  
+  background-color: #fff;
 }
 .switch-item{
   flex: 1;
-  padding: 10px;
+  padding: 15px;
 }
 .switch-item span{
   padding-bottom: 5px;

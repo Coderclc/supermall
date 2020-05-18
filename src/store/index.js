@@ -6,7 +6,7 @@ import mutations from "./mutations"
 import moduleA from "./modules/moduleA"
 Vue.use(Vuex);
 const state={
-  imgOnLoad:0
+  imgOnLoad:0,
 }
 const store = new Vuex.Store({
   state,

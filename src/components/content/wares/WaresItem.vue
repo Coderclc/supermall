@@ -12,14 +12,18 @@
 <script>
 export default {
   name: "WaresItem",
+  data() {
+    return {};
+  },
   props: {
     item: {
       type: Object
     }
   },
-  methods:{
-    imgLoad(){
-      this.$store.commit("imgLoaded")
+  methods: {
+    imgLoad() {
+       // vuex 状态管理
+        this.$store.commit("imgLoaded");
       // 事件总线方法
       // this.$bus.$emit("imgLoaded")
     }

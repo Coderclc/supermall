@@ -1,6 +1,12 @@
 <template>
   <div id="ccswiper">
-    <div class="swiper" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
+    <div
+      class="swiper"
+      ref="swiper"
+      @touchstart="touchStart"
+      @touchmove="touchMove"
+      @touchend="touchEnd"
+    >
       <slot></slot>
     </div>
     <slot name="indicator"></slot>
@@ -53,6 +59,7 @@ export default {
       this.handleDom();
 
       // 2.开启定时器
+      if (this.itemCount==1) return;
       this.startTimer();
     }, 500);
   },
@@ -60,13 +67,13 @@ export default {
     //
     handleDom: function() {
       // 获取swiper Dom
-      let swiper = document.querySelector(".swiper");
+      let swiper = this.$refs.swiper;
       // 获取swiperitem Arr
       let itemArr = swiper.getElementsByClassName("swiper-item");
 
       // 获取初始item的个数
       this.itemCount = itemArr.length;
-
+      if (this.itemCount == 1) return;
       // 3.如果大于1个, 那么在前后分别添加一个item
       if (this.itemCount > 1) {
         // 在swiperitemArr最后插入了最后的item
@@ -79,7 +86,6 @@ export default {
         this.swiperWidth = swiper.offsetWidth;
         this.swiperStyle = swiper.style;
       }
-
       //初始位置变成了新添加的,将其往左退一格
       this.setTransform(-this.swiperWidth);
     },
@@ -115,7 +121,7 @@ export default {
       this.setTransform(currentPosition);
 
       // 2.判断滚动到的位置
-        this.checkPosition();
+      this.checkPosition();
 
       // 4.滚动完成
       this.scrolling = false;
@@ -144,17 +150,17 @@ export default {
      * 拖动事件的处理
      */
     touchStart: function(event) {
+      if (this.itemCount == 1) return;
       // 1.如果正在滚动, 不可以拖动
       if (this.scrolling) return;
-
       // 2.停止定时器
       this.stopTimer();
-
       // 3.保存开始滚动的位置
       this.startX = event.touches[0].pageX;
     },
 
     touchMove: function(event) {
+      if (this.itemCount==1) return;
       // 计算touch 的位移
       this.currentX = event.touches[0].pageX;
       this.distance = this.currentX - this.startX;
@@ -166,6 +172,7 @@ export default {
     },
 
     touchEnd: function(e) {
+      if (this.itemCount==1) return;
       // 获取touch位移的||绝对值
       let currentMove = Math.abs(this.distance);
 

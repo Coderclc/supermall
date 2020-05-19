@@ -1,6 +1,6 @@
 <template>
   <div class="waresitem">
-    <img :src="item.show.img" @load="imgLoad" />
+    <img :src="item.show.img" @load="imgLoad" @click="imgClick" />
     <div class="info">
       <p>{{item.title}}</p>
       <span class="price">{{item.price}}</span>
@@ -26,6 +26,9 @@ export default {
         this.$store.commit("imgLoaded");
       // 事件总线方法
       // this.$bus.$emit("imgLoaded")
+    },
+    imgClick(){
+       this.$router.push("/details/"+this.item.iid);
     }
   }
 };

@@ -1,24 +1,13 @@
 <template>
   <div id="home">
-    <nav-bar class="home-bar">
-      <div slot="center">购物街</div>
-    </nav-bar>
+    <nav-bar class="home-bar"><div slot="center">购物街</div></nav-bar>
     <tab-switch
-      :titles="titles"
-      class="tab-switch"
-      @tabswitch="tabSwitch"
-      ref="tabSwitch_1"
-      v-show="isShow"
-    ></tab-switch>
-    <scroll
-      class="wrapper"
-      ref="scroll"
-      :probe-type="3"
-      :pullUpLoad="true"
-      @scroll="scroll"
-      @pullingUp="pullingUp"
-    >
-      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"></home-swiper>
+      :titles="titles" class="tab-switch"
+      @tabswitch="tabSwitch" ref="tabSwitch_1" v-show="isShow"></tab-switch>
+    <scroll  class="wrapper" ref="scroll"
+      :probe-type="3"  :pullUpLoad="true"
+      @scroll="scroll"  @pullingUp="pullingUp">
+      <home-swiper v-if="banners.length!==0" :banners="banners" @swiperImageLoad="swiperImageLoad"></home-swiper>
       <recommend :recommends="recommends"></recommend>
       <feature-view></feature-view>
       <tab-switch :titles="titles" @tabswitch="tabSwitch" ref="tabSwitch_2"></tab-switch>
@@ -44,12 +33,13 @@ export default {
   name: "Home",
   data() {
     return {
-      banners: null,
+      banners: [],
       recommends: null,
       titles: ["流行", "新款", "精选"],
       inititalType: "pop",
       isShowBackTop: false,
       isShow: false,
+      saveY: 0,
       Wares: {
         pop: { page: 0, list: [] },
         new: { page: 0, list: [] },
@@ -83,8 +73,12 @@ export default {
     // 将BScroll refresh() 函数进行防抖封装
     this.refresh = debounce(this.$refs.scroll.refresh, 50);
   },
-  destroyed(){
-    console.log("destoryed");
+  activated() {
+    this.$refs.scroll.refresh();
+    this.$refs.scroll.scrollTo(0, this.saveY, 0);
+  },
+  deactivated() {
+    this.saveY = this.$refs.scroll.scroll.y;
   },
   methods: {
     /**

@@ -1,8 +1,12 @@
 <template>
   <div class="tab-switch">
-    <div class="switch-item" v-for="(item,index) in titles" 
-    :key="item" :class="{actived:currentIndex==index}"
-    @click="itemSwitch(index)">
+    <div
+      class="switch-item"
+      v-for="(item,index) in titles"
+      :key="item"
+      :class="{actived:currentIndex==index}"
+      @click="itemSwitch(index)"
+    >
       <span>{{item}}</span>
     </div>
   </div>
@@ -18,8 +22,10 @@ export default {
   },
   methods:{
     itemSwitch(index){
+      if(this.currentIndex!=index){      
       this.currentIndex=index
       this.$emit("tabswitch",index)
+      }
     }
   },
   props:{
@@ -34,23 +40,23 @@ export default {
 </script>
 
 <style>
-.tab-switch{
+.tab-switch {
   display: flex;
   text-align: center;
   z-index: 9;
   background-color: #fff;
 }
-.switch-item{
+.switch-item {
   flex: 1;
   padding: 15px;
 }
-.switch-item span{
+.switch-item span {
   padding-bottom: 5px;
 }
-.actived{
-  color:var(--color-tint)
+.actived {
+  color: var(--color-tint);
 }
-.actived span{
+.actived span {
   border-bottom: 2px solid var(--color-tint);
 }
 </style>

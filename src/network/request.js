@@ -5,7 +5,7 @@ import "nprogress/nprogress.css";
 export function request(config) {
   // 创建axios的instance,定义实例配置
   const instance = axios.create({
-    baseURL: "http://123.207.32.32:8000",
+    baseURL: "http://152.136.185.210:8000/api/n3",
     timeout: 5000
   });
   // 拦截request config 

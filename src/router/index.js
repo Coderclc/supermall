@@ -6,6 +6,7 @@ const Home = () => import("views/home/Home");
 const Catalog = () => import("views/catalog/Catalog");
 const Shopping = () => import("views/shopping/Shopping");
 const Profile = () => import("views/profile/Profile");
+const Details = () => import("views/details/Details")
 
 const routes = [
   {
@@ -39,6 +40,13 @@ const routes = [
       title: "profile"
     },
     component: Profile
+  },
+  {
+    path: "/details/:id", 
+    meta: {
+      title: "details"
+    },
+    component: Details
   }
 ];
 

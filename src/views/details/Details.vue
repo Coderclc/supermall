@@ -1,14 +1,14 @@
 <template>
   <div id="details">
-    <details-nav-bar />
-    <scroll ref="scroll">
+    <details-nav-bar @navBarClick="navBarClick" ref="navbar"/>
+    <scroll ref="scroll" @scroll="scroll" :probeType="3">
       <details-swiper :topImages="topImages" v-if="topImages.length!=0" />
       <details-wares-info :info="info" class="wrapper" />
       <details-shop-info :shopInfo="shopInfo" />
       <details-wares-display :detailInfo="detailInfo" @imgLoadDone="imgLoadDone" />
-      <details-wares-param :wares-params="waresParams" />
-      <details-comment-info :commentInfo="commentInfo" />
-      <wares-list :wares="recommend" />
+      <details-wares-param :wares-params="waresParams" ref="params"/>
+      <details-comment-info :commentInfo="commentInfo" ref="comment"/>
+      <wares-list :wares="recommend" ref="wares"/>
     </scroll>
   </div>
 </template>
@@ -45,7 +45,9 @@ export default {
       detailInfo: {},
       waresParams: {},
       commentInfo: {},
-      recommend: []
+      recommend: [],
+      offsetTop: [],
+      index:0
     };
   },
   methods: {
@@ -85,23 +87,38 @@ export default {
           console.log("Failed to request data from server");
         });
     },
-    // 监听商品图片加载完成
+    // 监听商品图片详情加载完成,已在内部加了防抖操作
     imgLoadDone() {
       this.$refs.scroll.refresh();
+      this.switch()
     },
-    // 监听推荐图片加载完成
-    imgLoaded() {
-      console.log("123");
+    // 监听navBar 点击跳转
+    navBarClick(index) {
+      this.$refs.scroll.scrollTo(0, -this.offsetTop[index], 500);
+    },
+    // 监听滚动
+    scroll(position){
+      // 判断滚动的位置和offset位置的比较
+      for(let i in this.offsetTop)
+      {
+        if((this.index!=i)&&(i<this.offsetTop.length-1&&-position.y>=this.offsetTop[i]&&-position.y<this.offsetTop[+i+1])||(-position.y>=this.offsetTop[i]&&i==this.offsetTop.length-1)){
+          // 防止频繁触发
+          this.index=i
+          this.$refs.navbar.currentIndex=i
+        }
+      }
     }
   },
   computed: {
+    // 将Vuex状态管理绑定给计算属性
     listenImgOnLoad() {
       return this.$store.state.imgOnLoad;
     }
   },
-  watch:{
-    listenImgOnLoad(){
-      this.refresh()
+  // 监听状态管理的变化执行防抖封装的刷新
+  watch: {
+    listenImgOnLoad() {
+      this.refresh();
     }
   },
   components: {
@@ -122,11 +139,20 @@ export default {
     this.getDetailsData();
     // 请求detailsrecommend数据
     this.getDetailsRecommend();
-    
   },
-  mounted(){
+  mounted() {
     // 获取this.$refs必须在模板安装完之后
     this.refresh = debounce(this.$refs.scroll.refresh, 50);
+    // 获取组件的offsetTop添加到数组
+    this.offsetTop.push(0)
+    this.switch = debounce(() => {
+      this.offsetTop.splice(
+        1,3,
+        this.$refs.params.$el.offsetTop-44,
+        this.$refs.comment.$el.offsetTop-44,
+        this.$refs.wares.$el.offsetTop-44
+      );
+    }, 50);
   }
 };
 </script>

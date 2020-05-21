@@ -23,6 +23,10 @@ export default {
   methods: {
     imgLoad() {
       // vuex 状态管理
+      /**
+       * 有两种方法,第一判断 this.$route.path.test(/home)决定commit不同的事件字符串,但是要两个状态管理
+       * 也可以绑定在一个状态管理上,然后在home组件enter和leave时创建和删除watch属性*/
+
       this.$store.commit("imgLoaded");
       // 事件总线方法
       // this.$bus.$emit("imgLoaded")
@@ -32,9 +36,9 @@ export default {
       this.$router.push({ path: "/details/", query: { iid: this.item.iid } });
     }
   },
-  computed:{
-    showImage(){
-      return this.item.image||this.item.show.img
+  computed: {
+    showImage() {
+      return this.item.image || this.item.show.img;
     }
   }
 };

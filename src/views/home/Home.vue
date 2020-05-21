@@ -1,12 +1,23 @@
 <template>
   <div id="home">
-    <nav-bar class="home-bar"><div slot="center">购物街</div></nav-bar>
+    <nav-bar class="home-bar">
+      <div slot="center">购物街</div>
+    </nav-bar>
     <tab-switch
-      :titles="titles" class="tab-switch"
-      @tabswitch="tabSwitch" ref="tabSwitch_1" v-show="isShow"></tab-switch>
-    <scroll  class="wrapper" ref="scroll"
-      :probe-type="3"  :pullUpLoad="true"
-      @scroll="scroll"  @pullingUp="pullingUp">
+      :titles="titles"
+      class="tab-switch"
+      @tabswitch="tabSwitch"
+      ref="tabSwitch_1"
+      v-show="isShow"
+    ></tab-switch>
+    <scroll
+      class="wrapper"
+      ref="scroll"
+      :probe-type="3"
+      :pullUpLoad="true"
+      @scroll="scroll"
+      @pullingUp="pullingUp"
+    >
       <home-swiper v-if="banners.length!==0" :banners="banners" @swiperImageLoad="swiperImageLoad"></home-swiper>
       <recommend :recommends="recommends"></recommend>
       <feature-view></feature-view>
@@ -19,7 +30,7 @@
 <script>
 import NavBar from "components/common/navbar/NavBar";
 import Scroll from "components/common/scroll/Scroll";
-import TabSwitch from "components/content/tabcontrol/TabSwitch";
+import TabSwitch from "components/content/tabswitch/TabSwitch";
 import WaresList from "components/content/wares/WaresList";
 import BackTop from "components/content/backtop/BackTop";
 
@@ -44,7 +55,8 @@ export default {
         pop: { page: 0, list: [] },
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] }
-      }
+      },
+      unwatch: null
     };
   },
   components: {
@@ -74,11 +86,22 @@ export default {
     this.refresh = debounce(this.$refs.scroll.refresh, 50);
   },
   activated() {
+    // 跳转到离开时的位置
     this.$refs.scroll.refresh();
     this.$refs.scroll.scrollTo(0, this.saveY, 0);
+
+    // 创建监听属性 listenImgOnLoad,离开时取消,因为既要保持组件不被销毁,又要复用 wareslist组件的监听图片加载
+    this.unwatch = this.$watch("listenImgOnLoad", function() {
+      // 直接重复调用BScroll 的刷新
+      // this.$refs.scroll.refresh();
+      // 封装了防抖函数的刷新
+      this.refresh();
+    });
   },
   deactivated() {
+    // 保存当前位置
     this.saveY = this.$refs.scroll.scroll.y;
+    this.unwatch();
   },
   methods: {
     /**
@@ -157,15 +180,8 @@ export default {
     listenImgOnLoad() {
       return this.$store.state.imgOnLoad;
     }
-  },
-  watch: {
-    listenImgOnLoad() {
-      // 直接重复调用BScroll 的刷新
-      // this.$refs.scroll.refresh();
-      // 封装了防抖函数的刷新
-      this.refresh();
-    }
   }
+
 };
 </script>
 <style scoped>

@@ -1,17 +1,18 @@
 <template>
-    <nav-bar>
-      <div slot="left" @click="backClick">
-        <img src="~assets/img/common/back.svg" class="back" >
-      </div>
-      <div slot="center" class="caption">
-        <div
-          class="caption-item" :key="item"
-          v-for="(item,index) in caption"
-          :class="{actived:currentIndex==index}"
-          v-on:click="itemClick(index)"
-        >{{item}}</div>
-      </div>
-    </nav-bar>
+  <nav-bar>
+    <div slot="left" @click="backClick">
+      <img src="~assets/img/common/back.svg" class="back" />
+    </div>
+    <div slot="center" class="caption">
+      <div
+        class="caption-item"
+        :key="item"
+        v-for="(item,index) in caption"
+        :class="{actived:currentIndex==index}"
+        v-on:click="itemClick(index)"
+      >{{item}}</div>
+    </div>
+  </nav-bar>
 </template>
 
 <script>
@@ -21,19 +22,20 @@ export default {
   name: "DetailsNavBar",
   data() {
     return {
-      currentIndex:0,
+      currentIndex: 0,
       caption: ["商品", "参数", "评论", "推荐"]
     };
   },
   components: {
     NavBar
   },
-  methods:{
-    itemClick(index){
-      this.currentIndex=index
+  methods: {
+    itemClick(index) {
+      this.currentIndex = index;
+      this.$emit("navBarClick", index);
     },
-    backClick(){
-      this.$router.go(-1)
+    backClick() {
+      this.$router.go(-1);
     }
   }
 };
@@ -47,10 +49,10 @@ export default {
 .caption-item {
   flex: 1;
 }
-.actived{
+.actived {
   color: var(--color-tint);
 }
-.back{
+.back {
   vertical-align: -5px;
 }
 </style>

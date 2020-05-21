@@ -42,7 +42,7 @@ const routes = [
     component: Profile
   },
   {
-    path: "/details/:id", 
+    path: "/details", 
     meta: {
       title: "details"
     },

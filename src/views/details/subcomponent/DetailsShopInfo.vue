@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="middle-item-right">
-        <div v-for="item in shopInfo.score" :key="item.score" class="middle-item-right-item">
+        <div v-for="(item,index) in shopInfo.score" :key="index" class="middle-item-right-item">
           <span v-text="item.name"></span>
           <span class="score" :class="{'is-better':item.isBetter}" v-text="item.score"></span>
           <span class="text" :class="{'is-better':item.isBetter}">{{item.isBetter?"高":"低"}}</span>

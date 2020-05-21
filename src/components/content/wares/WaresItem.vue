@@ -1,6 +1,6 @@
 <template>
   <div class="waresitem">
-    <img :src="item.show.img" @load="imgLoad" @click="imgClick" />
+    <img :src="showImage" @load="imgLoad" @click="imgClick" />
     <div class="info">
       <p>{{item.title}}</p>
       <span class="price">{{item.price}}</span>
@@ -22,13 +22,19 @@ export default {
   },
   methods: {
     imgLoad() {
-       // vuex 状态管理
-        this.$store.commit("imgLoaded");
+      // vuex 状态管理
+      this.$store.commit("imgLoaded");
       // 事件总线方法
       // this.$bus.$emit("imgLoaded")
     },
-    imgClick(){
-       this.$router.push("/details/"+this.item.iid);
+    imgClick() {
+      //  this.$router.push("/details/"+this.item.iid);
+      this.$router.push({ path: "/details/", query: { iid: this.item.iid } });
+    }
+  },
+  computed:{
+    showImage(){
+      return this.item.image||this.item.show.img
     }
   }
 };

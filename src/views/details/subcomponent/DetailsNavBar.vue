@@ -1,7 +1,7 @@
 <template>
     <nav-bar>
-      <div slot="left">
-        <img src="~assets/img/common/back.svg" class="back" @click="backClick">
+      <div slot="left" @click="backClick">
+        <img src="~assets/img/common/back.svg" class="back" >
       </div>
       <div slot="center" class="caption">
         <div

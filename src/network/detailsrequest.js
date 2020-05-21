@@ -7,6 +7,12 @@ function requestDetailsData(iid) {
     }
   });
 }
+function requestDetailsRecommend() {
+  return request({
+    url: "/recommend",
+
+  });
+}
 // 详情页商品信息集合
 class information {
   constructor(itemInfo, columns, services) {
@@ -29,5 +35,6 @@ class shopInformation{
     this.csells=shop.cSells
   }
 }
-export { requestDetailsData };
+
+export { requestDetailsData,requestDetailsRecommend};
 export { information,shopInformation};

@@ -1,6 +1,6 @@
 <template>
   <div class="wareslist">
-    <wares-item v-for="item in wares" :key="item.iid+Math.random()" :item="item"/>
+    <wares-item v-for="(item,index) in wares" :key="index" :item="item"/>
   </div>
 </template>
 

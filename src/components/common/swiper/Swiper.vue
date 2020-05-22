@@ -67,8 +67,7 @@ export default {
     //
     handleDom: function() {
       // 获取swiper Dom
-      let swiper = this.$refs.swiper;
-      // 获取swiperitem Arr
+      let swiper = this.$refs["swiper"];
       let itemArr = swiper.getElementsByClassName("swiper-item");
 
       // 获取初始item的个数

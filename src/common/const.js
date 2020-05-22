@@ -1,0 +1,4 @@
+const BACK_TOP_POSITION=-1000
+export{
+  BACK_TOP_POSITION
+}

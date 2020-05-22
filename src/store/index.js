@@ -7,11 +7,13 @@ import moduleA from "./modules/moduleA"
 Vue.use(Vuex);
 const state={
   imgOnLoad:0,
+  cartList:[]
 }
 const store = new Vuex.Store({
   state,
   mutations,
   actions,
+  getters,
   modules:{
     moduleA
   }

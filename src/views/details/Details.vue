@@ -1,15 +1,17 @@
 <template>
   <div id="details">
-    <details-nav-bar @navBarClick="navBarClick" ref="navbar"/>
+    <details-nav-bar @navBarClick="navBarClick" ref="navbar" />
     <scroll ref="scroll" @scroll="scroll" :probeType="3">
       <details-swiper :topImages="topImages" v-if="topImages.length!=0" />
       <details-wares-info :info="info" class="wrapper" />
       <details-shop-info :shopInfo="shopInfo" />
       <details-wares-display :detailInfo="detailInfo" @imgLoadDone="imgLoadDone" />
-      <details-wares-param :wares-params="waresParams" ref="params"/>
-      <details-comment-info :commentInfo="commentInfo" ref="comment"/>
-      <wares-list :wares="recommend" ref="wares"/>
+      <details-wares-param :wares-params="waresParams" ref="params" />
+      <details-comment-info :commentInfo="commentInfo" ref="comment" />
+      <wares-list :wares="recommend" ref="wares" />
     </scroll>
+    <back-top @click.native="backTop" v-show="isShowBackTop"></back-top>
+    <details-bot-bar @addToCart="addToCart"/>
   </div>
 </template>
 
@@ -21,12 +23,13 @@ import DetailsShopInfo from "./subcomponent/DetailsShopInfo";
 import DetailsWaresDisplay from "./subcomponent/DetailsWaresDisplay";
 import DetailsWaresParam from "./subcomponent/DetailsWaresParam";
 import DetailsCommentInfo from "./subcomponent/DetailsCommentInfo";
+import DetailsBotBar from "./subcomponent/DetailsBotBar";
 
 import WaresList from "components/content/wares/WaresList";
 import Scroll from "components/common/scroll/Scroll";
 
 import { debounce } from "common/utils";
-
+import { backTopmixIn } from "common/mixin";
 import {
   information,
   requestDetailsData,
@@ -47,9 +50,10 @@ export default {
       commentInfo: {},
       recommend: [],
       offsetTop: [],
-      index:0
+      index: 0
     };
   },
+  mixins: [backTopmixIn],
   methods: {
     // 请求details数据
     getDetailsData() {
@@ -80,7 +84,6 @@ export default {
     getDetailsRecommend() {
       requestDetailsRecommend()
         .then(res => {
-          console.log(res);
           this.recommend = res.data.list;
         })
         .catch(err => {
@@ -90,23 +93,43 @@ export default {
     // 监听商品图片详情加载完成,已在内部加了防抖操作
     imgLoadDone() {
       this.$refs.scroll.refresh();
-      this.switch()
+      this.switch();
     },
     // 监听navBar 点击跳转
     navBarClick(index) {
       this.$refs.scroll.scrollTo(0, -this.offsetTop[index], 500);
     },
     // 监听滚动
-    scroll(position){
+    scroll(position) {
       // 判断滚动的位置和offset位置的比较
-      for(let i in this.offsetTop)
-      {
-        if((this.index!=i)&&(i<this.offsetTop.length-1&&-position.y>=this.offsetTop[i]&&-position.y<this.offsetTop[+i+1])||(-position.y>=this.offsetTop[i]&&i==this.offsetTop.length-1)){
+      for (let i in this.offsetTop) {
+        if (
+          (this.index != i &&
+            i < this.offsetTop.length - 1 &&
+            -position.y >= this.offsetTop[i] &&
+            -position.y < this.offsetTop[+i + 1]) ||
+          (-position.y >= this.offsetTop[i] && i == this.offsetTop.length - 1)
+        ) {
           // 防止频繁触发
-          this.index=i
-          this.$refs.navbar.currentIndex=i
+          this.index = i;
+          this.$refs.navbar.currentIndex = i;
         }
       }
+      this.listenShowBackTop(position);
+    },
+    // 监听addToCart
+    addToCart(){
+      const product={}
+      product.image=this.topImages[0]
+      product.title=this.info.title
+      product.desc=this.info.discountDesc
+      product.lowNowPrice=this.info.lowNowPrice
+      product.id=this.id
+      this.$store.dispatch({
+        type:"addToCart",
+        product
+      })
+      console.log(this.$store.state.cartList);
     }
   },
   computed: {
@@ -130,7 +153,8 @@ export default {
     DetailsWaresDisplay,
     DetailsWaresParam,
     DetailsCommentInfo,
-    WaresList
+    WaresList,
+    DetailsBotBar
   },
   created() {
     // 获取路由id
@@ -144,13 +168,14 @@ export default {
     // 获取this.$refs必须在模板安装完之后
     this.refresh = debounce(this.$refs.scroll.refresh, 50);
     // 获取组件的offsetTop添加到数组
-    this.offsetTop.push(0)
+    this.offsetTop.push(0);
     this.switch = debounce(() => {
       this.offsetTop.splice(
-        1,3,
-        this.$refs.params.$el.offsetTop-44,
-        this.$refs.comment.$el.offsetTop-44,
-        this.$refs.wares.$el.offsetTop-44
+        1,
+        3,
+        this.$refs.params.$el.offsetTop - 44,
+        this.$refs.comment.$el.offsetTop - 44,
+        this.$refs.wares.$el.offsetTop - 44
       );
     }, 50);
   }
@@ -165,7 +190,7 @@ export default {
   background-color: #fff;
 }
 .wrapper {
-  height: calc(100% - 44px);
+  height: calc(100% - 93px);
   overflow: hidden;
 }
 </style>

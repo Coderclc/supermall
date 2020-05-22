@@ -5,7 +5,7 @@
     </nav-bar>
     <tab-switch
       :titles="titles"
-      class="tab-switch"
+      class="tab-switch_1"
       @tabswitch="tabSwitch"
       ref="tabSwitch_1"
       v-show="isShow"
@@ -32,7 +32,6 @@ import NavBar from "components/common/navbar/NavBar";
 import Scroll from "components/common/scroll/Scroll";
 import TabSwitch from "components/content/tabswitch/TabSwitch";
 import WaresList from "components/content/wares/WaresList";
-import BackTop from "components/content/backtop/BackTop";
 
 import HomeSwiper from "./subcomponent/HomeSwiper";
 import Recommend from "./subcomponent/Recommend";
@@ -40,15 +39,16 @@ import FeatureView from "./subcomponent/FeatureView";
 
 import { requestHomeData, requestHomeWares } from "network/homerequest";
 import { debounce } from "common/utils";
+import {backTopmixIn} from "common/mixin"
 export default {
   name: "Home",
+  mixins:[backTopmixIn],
   data() {
     return {
       banners: [],
       recommends: null,
       titles: ["流行", "新款", "精选"],
       inititalType: "pop",
-      isShowBackTop: false,
       isShow: false,
       saveY: 0,
       Wares: {
@@ -67,7 +67,6 @@ export default {
     FeatureView,
     WaresList,
     Scroll,
-    BackTop
   },
   created() {
     // 执行 getHomeData方法获取首页数据
@@ -124,15 +123,14 @@ export default {
       this.$refs.tabSwitch_1.currentIndex = index;
       this.$refs.tabSwitch_2.currentIndex = index;
     },
-    // 回到顶部
-    backTop() {
-      this.$refs.scroll.scrollTo(0, -600, 500);
-    },
+
     // 监听滚轮位置
     scroll(position) {
-      this.isShowBackTop = position.y < -1000;
-      this.isShow = position.y < -this.tabSwitchOffSetTop;
+      this.isShow = position.y < -this.tabSwitchOffSetTop+44;
+      // 执行mixin中的函数
+      this.listenShowBackTop(position)
     },
+
     // 监听上拉加载
     pullingUp() {
       this.getHomeWares(this.inititalType);
@@ -180,8 +178,8 @@ export default {
     listenImgOnLoad() {
       return this.$store.state.imgOnLoad;
     }
-  }
-
+  },
+  
 };
 </script>
 <style scoped>
@@ -205,15 +203,21 @@ export default {
   top: 44px;
   left: 0; */
   /* background-color: #fff; */
-  position: relative;
+  /* position: relative; */
+}
+.tab-switch_1{
+  position: fixed;
+  top:44px;
+  left:0;
+  right: 0;
 }
 .wrapper {
   /* 自动计算高度法 */
-  /* height: calc(100% - 49px); */
+  height: calc(100% - 49px);
   overflow: hidden;
   /* 强制定位法 */
-  position: absolute;
+  /* position: absolute;
   top: 44px;
-  bottom: 49px;
+  bottom: 49px; */
 }
 </style>

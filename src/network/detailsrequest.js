@@ -20,6 +20,7 @@ class information {
     this.price = itemInfo.price;
     this.oldPrice = itemInfo.oldPrice;
     this.discountDesc = itemInfo.discountDesc;
+    this.lowNowPrice=itemInfo.lowNowPrice
     this.discountBgColor = itemInfo.discountBgColor;
     this.columns = columns;
     this.services = services;

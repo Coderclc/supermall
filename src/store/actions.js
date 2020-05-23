@@ -1,11 +1,16 @@
 import {ALREADY,NO_YET} from "./mutations_types"
 export default  {
-  addToCart({state,commit},payLoad){
-    const item=state.cartList.find(item=>item.id==payLoad.product.id)
-    if(item){
-      commit({type:ALREADY,item})
-    }else {
-      commit({type:NO_YET,payLoad})
-    }
+  addToCartActions({state,commit},payLoad){
+    return new Promise((resolve,reject)=>{
+      const item=state.cartList.find(item=>item.id==payLoad.product.id)
+      if(state.cartList.length==0) state.isAllClick=true
+      if(item){
+        commit({type:ALREADY,item})
+        resolve("当前的数目➕1")
+      }else {
+        commit({type:NO_YET,payLoad})
+        resolve("添加新商品成功我在action中")
+      }
+    })
   }
 }

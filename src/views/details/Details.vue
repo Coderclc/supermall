@@ -12,10 +12,12 @@
     </scroll>
     <back-top @click.native="backTop" v-show="isShowBackTop"></back-top>
     <details-bot-bar @addToCart="addToCart"/>
+    <toast :message="message" :show="show"/>
   </div>
 </template>
 
 <script>
+import {mapActions} from "vuex"
 import DetailsNavBar from "./subcomponent/DetailsNavBar";
 import DetailsSwiper from "./subcomponent/DetailsSwiper";
 import DetailsWaresInfo from "./subcomponent/DetailsWaresInfo";
@@ -27,6 +29,7 @@ import DetailsBotBar from "./subcomponent/DetailsBotBar";
 
 import WaresList from "components/content/wares/WaresList";
 import Scroll from "components/common/scroll/Scroll";
+import Toast from "components/common/toast/Toast"
 
 import { debounce } from "common/utils";
 import { backTopmixIn } from "common/mixin";
@@ -50,7 +53,9 @@ export default {
       commentInfo: {},
       recommend: [],
       offsetTop: [],
-      index: 0
+      index: 0,
+      show:false,
+      message:null
     };
   },
   mixins: [backTopmixIn],
@@ -118,19 +123,25 @@ export default {
       this.listenShowBackTop(position);
     },
     // 监听addToCart
+    ...mapActions(["addToCartActions"]),
     addToCart(){
       const product={}
       product.image=this.topImages[0]
       product.title=this.info.title
-      product.desc=this.info.discountDesc
+      product.desc=this.detailInfo.desc
       product.lowNowPrice=this.info.lowNowPrice
       product.id=this.id
-      this.$store.dispatch({
+      this.addToCartActions({
         type:"addToCart",
         product
+      }).then(res=>{
+        this.show=true
+        this.message=res
+        setTimeout(()=>{
+          this.show=false
+        },1000)
       })
-      console.log(this.$store.state.cartList);
-    }
+    },
   },
   computed: {
     // 将Vuex状态管理绑定给计算属性
@@ -149,7 +160,7 @@ export default {
     DetailsSwiper,
     DetailsWaresInfo,
     DetailsShopInfo,
-    Scroll,
+    Scroll,Toast,
     DetailsWaresDisplay,
     DetailsWaresParam,
     DetailsCommentInfo,
@@ -170,9 +181,7 @@ export default {
     // 获取组件的offsetTop添加到数组
     this.offsetTop.push(0);
     this.switch = debounce(() => {
-      this.offsetTop.splice(
-        1,
-        3,
+      this.offsetTop.splice(1,3,
         this.$refs.params.$el.offsetTop - 44,
         this.$refs.comment.$el.offsetTop - 44,
         this.$refs.wares.$el.offsetTop - 44

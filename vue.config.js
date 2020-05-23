@@ -28,7 +28,8 @@ module.exports = {
         views: resolve("src/views"),
         common: "@/common",
         components: "@/components",
-        network: "@/network"
+        network: "@/network",
+        store:"@/store"
       },
       extensions: [".jpg"]
     }

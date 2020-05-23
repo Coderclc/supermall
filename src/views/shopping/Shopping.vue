@@ -1,28 +1,28 @@
 <template>
   <div id="shopping">
     <nav-bar class="nav-bar">
-      <div slot="center">购物车({{cwl}})</div>
+      <div slot="center">购物车({{cartListLength}})</div>
     </nav-bar>
-    <cart-list></cart-list>
+    <cart-list :cartList="cartList"/>
+    <cart-settle-bar :cartList="cartList"/>
   </div>
 </template>
 <script>
 import NavBar from "components/common/navbar/NavBar"
 
 import CartList from "./subcomponent/CartList"
-
+import CartSettleBar from "./subcomponent/CartSettleBar"
 import { mapGetters } from 'vuex'
 
 export default {
   name:"Shopping",
   components:{
     NavBar,
-    CartList
+    CartList,
+    CartSettleBar
   },
   computed:{
-    ...mapGetters({
-      cwl:"cartListLength"
-    })
+    ...mapGetters(["cartListLength","cartList"])
   }
 }
 </script>

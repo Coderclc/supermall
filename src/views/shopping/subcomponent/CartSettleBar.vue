@@ -7,7 +7,7 @@
       </div>
       <p>合计:{{totalPrice|rounding}}</p>
     </div>
-    <div class="right">去计算{{totalNumber}}</div>
+    <div class="right" @click="calculateClick">去计算{{totalNumber}}</div>
   </div>
 </template>
 <script>
@@ -37,13 +37,20 @@ export default {
       let totalprice = this.cartList
         .filter(x => x.isCheck)
         .map(x => x.count * x.lowNowPrice)
-        .reduce((previous, x) => x + previous, 0);
-      return totalprice;
-    },
+        .reduce((previous, x) => x + previous, 0)
+      return +totalprice;
+    }
   },
   methods: {
     checkClick() {
       this.$store.commit(ALLCHECK);
+    },
+    calculateClick() {
+      if (this.cartList.length) {
+        this.$toast.show(`谢谢惠顾,一共${this.totalPrice.toFixed(2)}元`);
+      } else {
+        this.$toast.show("请添加商品到购物车");
+      }
     }
   },
   // 过滤价格防止溢出

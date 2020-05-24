@@ -12,7 +12,6 @@
     </scroll>
     <back-top @click.native="backTop" v-show="isShowBackTop"></back-top>
     <details-bot-bar @addToCart="addToCart"/>
-    <toast :message="message" :show="show"/>
   </div>
 </template>
 
@@ -29,7 +28,6 @@ import DetailsBotBar from "./subcomponent/DetailsBotBar";
 
 import WaresList from "components/content/wares/WaresList";
 import Scroll from "components/common/scroll/Scroll";
-import Toast from "components/common/toast/Toast"
 
 import { debounce } from "common/utils";
 import { backTopmixIn } from "common/mixin";
@@ -54,8 +52,7 @@ export default {
       recommend: [],
       offsetTop: [],
       index: 0,
-      show:false,
-      message:null
+
     };
   },
   mixins: [backTopmixIn],
@@ -135,11 +132,7 @@ export default {
         type:"addToCart",
         product
       }).then(res=>{
-        this.show=true
-        this.message=res
-        setTimeout(()=>{
-          this.show=false
-        },1000)
+        this.$toast.show(res)
       })
     },
   },
@@ -160,7 +153,7 @@ export default {
     DetailsSwiper,
     DetailsWaresInfo,
     DetailsShopInfo,
-    Scroll,Toast,
+    Scroll,
     DetailsWaresDisplay,
     DetailsWaresParam,
     DetailsCommentInfo,

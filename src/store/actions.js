@@ -9,7 +9,7 @@ export default  {
         resolve("当前的数目➕1")
       }else {
         commit({type:NO_YET,payLoad})
-        resolve("添加新商品成功我在action中")
+        resolve("添加新商品成功")
       }
     })
   }

@@ -4,7 +4,7 @@
     <div class="info-price">
       <span class="price">{{info.price}}</span>
       <span class="old-price">{{info.oldPrice}}</span>
-      <span
+      <span v-if="info.discountDesc"
         class="discountDesc"
         :style="{backgroundColor:info.discountBgColor}"
       >{{info.discountDesc}}</span>

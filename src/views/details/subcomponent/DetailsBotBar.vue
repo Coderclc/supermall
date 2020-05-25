@@ -9,14 +9,14 @@
         <i class="iconfont icon-dianpu"></i>
         <p>店铺</p>
       </div>
-      <div class="left-item">
+      <div class="left-item" @click="addStars" :class="{stars:isStars}">
         <i class="iconfont icon-shoucang1"></i>
         <p>收藏</p>
       </div>
     </div>
     <div class="bot-item right">
-      <div class="right-item add" @click="onClick">加入购物车</div>
-      <div class="right-item buy">购买</div>
+      <div class="right-item add" @click="addToCart">加入购物车</div>
+      <div class="right-item buy" @click="purchase">购买</div>
     </div>
   </div>
 </template>
@@ -25,8 +25,19 @@
 export default {
   name:"DetailsBotBar",
   methods:{
-    onClick(){
+    addToCart(){
       this.$emit("addToCart")
+    },
+    purchase(){
+      this.$toast.show("谢谢惠顾")
+    },
+    addStars(){
+      this.isStars =!this.isStars
+    }
+  },
+  data(){
+    return{
+      isStars:false
     }
   }
 }
@@ -64,5 +75,8 @@ export default {
 }
 .buy{
   background-color: #f69;
+}
+.stars{
+  color: var(--color-tint);
 }
 </style>

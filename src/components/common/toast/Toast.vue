@@ -28,6 +28,8 @@ export default {
 
 <style scoped>
 .toast{
+  font-size: 20px;
+  padding: 10px;
   color: #ccc;
   background-color:rgba(0,0,0,.75);
   position:fixed;

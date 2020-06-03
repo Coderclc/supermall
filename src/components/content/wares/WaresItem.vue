@@ -33,7 +33,6 @@ export default {
     },
     imgClick() {
       //  this.$router.push("/details/"+this.item.iid);
-      console.log(this.item);
       if (this.item.item_id) {
         this.$router.push({ path: "/details/", query: { iid: this.item.item_id } });
       } else {

@@ -10,7 +10,6 @@ function requestDetailsData(iid) {
 function requestDetailsRecommend() {
   return request({
     url: "/recommend",
-
   });
 }
 // 详情页商品信息集合

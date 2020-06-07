@@ -3,7 +3,7 @@
     <img v-lazy="showImage" @load="imgLoad" @click="imgClick" />
     <div class="info">
       <p>{{item.title}}</p>
-      <span class="price">{{item.price}}</span>
+      <span class="price">{{item.price|preFixPrice}}</span>
       <span>{{item.cfav}}</span>
     </div>
   </div>
@@ -42,7 +42,12 @@ export default {
   },
   computed: {
     showImage() {
-      return this.item.image || this.item.show.img;
+      return this.item.image ||  this.item.img || this.item.show.img
+    }
+  },
+  filters:{
+    preFixPrice(value){
+      return '$'+value
     }
   }
 };

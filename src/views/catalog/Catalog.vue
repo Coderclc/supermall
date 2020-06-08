@@ -6,11 +6,14 @@
     <scroll class="menu-scroll">
       <tab-menu :categories="categories" @menuItemTap="menuItemTap" />
     </scroll>
-    <scroll class="menu-content-scroll">
+    <scroll @scroll="scroll"
+    ref="scroll" :probeType="3"
+    class="menu-content-scroll">
       <tab-menu-content :subcategories="subcategories" />
       <tab-switch :titles="titles" class="tab-switch" @tabswitch="tabswitch" />
       <wares-list :wares="wares[inititalType].list" />
     </scroll>
+    <back-top @click.native="backTop" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 <script>
@@ -21,6 +24,8 @@ import WaresList from "components/content/wares/WaresList";
 
 import TabMenu from "./subcomponent/TabMenu";
 import TabMenuContent from "./subcomponent/TabMenuContent";
+
+import {backTopmixIn} from "common/mixin"
 
 import {
   requestCatalogMenu,
@@ -56,6 +61,7 @@ export default {
     //获取分类menu data
     this.getCatalogMenu();
   },
+  mixins:[backTopmixIn],
   methods: {
     getCatalogMenu() {
       requestCatalogMenu().then(res => {
@@ -102,6 +108,10 @@ export default {
           this.inititalType = "sell";
           break;
       }
+    },
+    // 监听滚动
+    scroll(position){
+      this.listenShowBackTop(position)
     }
   }
 };

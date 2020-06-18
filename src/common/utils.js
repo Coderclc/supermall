@@ -1,6 +1,6 @@
 function debounce(fn, delay) {
   let timer;
-  return (...args) => {
+  return function(...args){
     timer && clearTimeout(timer);
     timer = setTimeout(() => {
       fn.apply(this, args);

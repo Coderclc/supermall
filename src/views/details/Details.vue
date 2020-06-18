@@ -52,7 +52,6 @@ export default {
       recommend: [],
       offsetTop: [],
       index: 0,
-
     };
   },
   mixins: [backTopmixIn],
@@ -106,8 +105,8 @@ export default {
       // 判断滚动的位置和offset位置的比较
       for (let i in this.offsetTop) {
         if (
-          (this.index != i &&
-            i < this.offsetTop.length - 1 &&
+          this.index != i &&
+            (i < this.offsetTop.length - 1 &&
             -position.y >= this.offsetTop[i] &&
             -position.y < this.offsetTop[+i + 1]) ||
           (-position.y >= this.offsetTop[i] && i == this.offsetTop.length - 1)

@@ -1,5 +1,5 @@
 <template>
-  <div class="tabbar-item" v-on:click="itemClick">
+  <div class="tabbar-item" @click="itemClick">
     <div v-if="!isActivated">
       <slot name="icon"></slot>
     </div>

@@ -1,6 +1,5 @@
 <template>
   <div class="details-wares-display" v-if="Object.keys(detailInfo).length!=0">
-
     <div class="before"></div>
     <div class="desc">{{detailInfo.desc}}</div>
     <div class="after"></div>
